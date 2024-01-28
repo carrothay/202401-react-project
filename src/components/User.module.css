@@ -1,0 +1,39 @@
+.userBarContainer {
+  display: inline-block;
+}
+
+.loginform {
+  max-width: 320px;
+  height: 290px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+.inputform {
+  position: relative;
+  height: 80px;
+}
+
+.inputform .loginfield {
+  position: absolute;
+  top: 8px;
+  left: 0;
+}
+
+.listtable {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 0 40px;
+}
+
+@media (max-width: 599px) {
+  .userBarContainer {
+    position: absolute;
+    right: 0;
+    top: 12px;
+    right: 20px;
+  }
+}

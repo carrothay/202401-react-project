@@ -1,0 +1,77 @@
+.gridcontainer {
+  justify-content: flex-start;
+}
+
+.cardcontainer a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.cardinner {
+  box-sizing: border-box;
+  max-width: 100%;
+  height: 500px;
+  border-radius: 3px;
+}
+
+.cardimg {
+  height: 250px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.cardcontent {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 200px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.homelisting {
+  padding-bottom: 40px;
+}
+
+.homelisting .cardinner {
+  height: 450px;
+}
+
+.homelisting .cardcontent {
+  height: 150px;
+}
+
+.cardheader {
+  line-height: 1.25;
+}
+
+.address {
+  font-weight: 500;
+}
+
+.addfavsection {
+  justify-content: flex-end;
+}
+
+.ratingcontainer {
+  position: relative;
+}
+.ratingtext {
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  left: 78px;
+}
+.tagcontainer {
+  margin-top: 8px;
+}
+
+.taginfo {
+  display: inline-block;
+}
+
+@media (max-width: 599px) {
+  .cardinner {
+    width: 90%;
+  }
+}

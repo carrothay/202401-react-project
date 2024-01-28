@@ -1,0 +1,157 @@
+.detailsContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.detailsContainer h3 {
+  font-size: 1.85rem;
+  font-weight: 400;
+}
+
+.hoursInfo h4 {
+  text-transform: capitalize;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.hoursInfo span {
+  font-size: 0.85rem;
+  margin-right: 20px;
+}
+
+.detailsContainer h2 {
+  font-size: 2.25rem;
+  font-weight: 500;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+.detailsMain {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% / 3 * 2);
+}
+
+.detailsMain p {
+  font-size: 0.85rem;
+}
+
+.addfavcopy {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.8rem;
+  padding-left: 5px;
+}
+
+.detailsMain section {
+  margin-bottom: 40px;
+  font-size: 16px;
+  padding-right: 20px;
+}
+.detailsMain section::after {
+  content: "";
+  display: block;
+  width: 100%;
+  position: relative;
+  top: 40px;
+  border-bottom: 1px solid #ccc;
+}
+.mainInfo div {
+  margin-bottom: 10px;
+}
+
+.reviewItem {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reviewItem:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.reviewTop {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.reviewAuthor {
+  font-weight: bold;
+}
+.reviewDetail {
+  font-size: 16px;
+}
+.reviewProfile {
+  width: 10%;
+  height: auto;
+}
+.detailsRight {
+  margin: 20px;
+  align-self: start;
+  flex-grow: 4;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  width: calc(100% / 3);
+}
+.website a {
+  text-decoration: none;
+  color: inherit;
+  word-wrap: break-word;
+  font-size: 0.85rem;
+}
+
+.detailbackground {
+  height: 480px;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  background-image: url("../assets/detailbg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.ratingcontainer {
+  position: relative;
+}
+.ratingtext {
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  left: 90px;
+}
+
+.tagcontainer {
+  margin-top: 8px;
+}
+
+.taginfo {
+  display: inline-block;
+}
+
+.description span {
+  font-size: 0.85rem;
+}
+
+.location p {
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 899px) {
+  .detailsContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .detailsMain,
+  .detailsRight {
+    width: 100%;
+  }
+  .detailsRight {
+    margin: 0;
+    padding-bottom: 60px;
+  }
+}
