@@ -1,36 +1,9 @@
 import styles from "./Card.module.css";
-import { styled } from "@mui/material/styles";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Link } from "react-router-dom";
-import {
-  Grid,
-  Card,
-  CardMedia,
-  Rating,
-  Typography,
-  CardContent,
-  CardActions,
-  IconButton,
-  Divider,
-} from "@mui/material";
+import { Grid } from "@mui/material";
 import UserContext from "../context/UserContext";
 import { useContext, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-const StyledRating = styled(Rating)({
-  "& .MuiRating-iconFilled": {
-    color: "#d32f2f",
-  },
-  "& .MuiRating-icon": {
-    fontSize: ".85rem",
-  },
-});
-
-const FavIcon = styled(FavoriteIcon)`
-  &.override {
-    color: #d32f2f;
-  }
-`;
+import RestaurantCard from "./RestaurantCard";
 
 const cardtheme = createTheme({
   components: {
@@ -97,96 +70,13 @@ function RestaurantTable({ restaurants, imageData }) {
         sx={{ justifyContent: "flex-start" }}
       >
         {restaurants.map((restaurant, index) => {
-          const imageUrl = imageData[index];
-          // Wrap each Card in a Link component
           return (
-            <Grid
-              item
-              align="center"
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
+            <RestaurantCard
               key={restaurant.uuid}
-              className={styles.cardcontainer}
-            >
-              <CardContent>
-                <Card className={styles.cardinner}>
-                  <Link
-                    key={restaurant.uuid}
-                    to={`/details/${restaurant.uuid}`}
-                    state={restaurant}
-                  >
-                    <CardMedia
-                      className={styles.cardimg}
-                      component="img"
-                      image={imageUrl}
-                      alt={restaurant.name}
-                    />
-                    <div className={styles.cardcontent}>
-                      <div className={styles.cardinnercontent}>
-                        <Typography
-                          variant="h6"
-                          className={styles.cardheader}
-                          sx={{ marginBottom: 1, marginTop: 1 }}
-                        >
-                          {restaurant.name}
-                        </Typography>
-                        <div className={styles.ratingcontainer}>
-                          <StyledRating
-                            name="read-only"
-                            value={restaurant.rating}
-                            precision={0.5}
-                            readOnly
-                          />
-                          <Typography
-                            variant="p"
-                            className={styles.ratingtext}
-                            color="text.secondary"
-                          >
-                            {restaurant.rating}
-                          </Typography>
-                        </div>
-                        <div className={styles.tagcontainer}>
-                          <Typography
-                            className={styles.taginfo}
-                            color="text.secondary"
-                            variant="p"
-                          >
-                            {restaurant.type}
-                            {restaurant.cuisine && <span>,&nbsp;</span>}
-                          </Typography>
-                          {restaurant.cuisine && (
-                            <Typography
-                              className={styles.taginfo}
-                              color="text.secondary"
-                              variant="p"
-                            >
-                              {restaurant.cuisine}
-                            </Typography>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                  {isLoggedIn && <Divider light variant="middle" />}
-                  <CardActions className={styles.addfavsection}>
-                    {isLoggedIn && (
-                      <IconButton
-                        aria-label="add to favorites"
-                        onClick={() => handlerToggleProduct(restaurant, index)}
-                      >
-                        <FavIcon
-                          className={
-                            favIconActiveArray[index] ? "override" : "selected"
-                          }
-                        />
-                      </IconButton>
-                    )}
-                  </CardActions>
-                </Card>
-              </CardContent>
-            </Grid>
+              index={index}
+              imageData={imageData}
+              {...restaurant}
+            />
           );
         })}
       </Grid>

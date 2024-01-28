@@ -86,10 +86,7 @@ function RestaurantListing({
           setFilteredRestaurants={setFilteredRestaurants}
         />
         {filtered && filteredRestaurants?.length > 0 && (
-          <RestaurantTable
-            restaurants={filteredRestaurants}
-            imageData={imageData}
-          />
+          <RestaurantTable restaurants={filteredRestaurants} />
         )}
 
         {filtered && filteredRestaurants?.length === 0 && (
@@ -103,7 +100,7 @@ function RestaurantListing({
             <h4 className={styles.resultsheadline}>
               {restaurants.length} of {totalRecords} results
             </h4>
-            <RestaurantTable restaurants={restaurants} imageData={imageData} />
+            <RestaurantTable restaurants={restaurants} />
             {loadMore ? (
               <Button
                 className={styles.loadmorebutton}

@@ -1,25 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import fnbApi from "../api/fnb-api";
-import ImageComponent from "./ImageComponent";
 import styles from "./Card.module.css";
 import { styled } from "@mui/material/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import {
-  Grid,
-  Card,
-  CardMedia,
-  Rating,
-  Typography,
-  CardContent,
-  Container,
-  Divider,
-  CardActions,
-  IconButton,
-} from "@mui/material";
+import { Grid, Rating, Container } from "@mui/material";
 import { Link } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Placeholder from "../assets/placeholder.jpg";
 import UserContext from "../context/UserContext";
+import RestaurantCard from "./RestaurantCard";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -143,6 +131,16 @@ function Recommendation() {
           className={styles.gridcontainer}
           sx={{ justifyContent: "flex-start" }}
         >
+          {randomData.map((restaurant, index) => {
+            return (
+              <RestaurantCard
+                key={restaurant.uuid}
+                index={index}
+                {...restaurant}
+              />
+            );
+          })}
+          {/* 
           {randomData.map((fnb, i) => {
             return (
               <Grid
@@ -243,6 +241,7 @@ function Recommendation() {
               </Grid>
             );
           })}
+          */}
         </Grid>
       </Container>
     </ThemeProvider>
