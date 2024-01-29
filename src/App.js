@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RestaurantDetail from "./pages/RestaurantDetail";
 import Restaurants from "./pages/Restaurants";
 import Home from "./pages/Home";
 import RootLayout from "./layouts/RootLayout";
@@ -11,6 +10,8 @@ import { red } from "@mui/material/colors";
 import "./App.css";
 import DefaultPage from "./pages/DefaultPage";
 import ScrollToTop from "./components/ScrollToTop";
+import { RestaurantProvider } from "./context/RestaurantContext";
+import RestaurantDetail from "./components/RestaurantDetail";
 
 function App() {
   const [userKeyword, setUserKeyword] = useState("");
@@ -31,22 +32,24 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <ScrollToTop>
-          <Routes>
-            <Route
-              path="/"
-              element={<RootLayout handlerKeyword={handlerKeyword} />}
-            >
-              <Route index element={<Home />} />
+          <RestaurantProvider>
+            <Routes>
               <Route
-                path="/restaurants"
-                element={<Restaurants userKeyword={userKeyword} />}
-              />
-              <Route path="details/:uuid" element={<RestaurantDetail />} />
-              <Route path="/user" element={<UserInfo />} />
-              <Route path="/login" element={<UserLogin />} />
-            </Route>
-            <Route path="*" element={<DefaultPage />} />
-          </Routes>
+                path="/"
+                element={<RootLayout handlerKeyword={handlerKeyword} />}
+              >
+                <Route index element={<Home />} />
+                <Route
+                  path="/restaurants"
+                  element={<Restaurants userKeyword={userKeyword} />}
+                />
+                <Route path="details/:uuid" element={<RestaurantDetail />} />
+                <Route path="/user" element={<UserInfo />} />
+                <Route path="/login" element={<UserLogin />} />
+              </Route>
+              <Route path="*" element={<DefaultPage />} />
+            </Routes>
+          </RestaurantProvider>
         </ScrollToTop>
       </BrowserRouter>
     </ThemeProvider>

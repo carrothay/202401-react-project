@@ -10,8 +10,13 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import styles from "./Card.module.css";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import RestaurantContext from "../context/RestaurantContext";
+import { useContext } from "react";
 
-function RestaurantCard({ uuid, name, rating, type, cuisine, imageUrl }) {
+function RestaurantCard(props) {
+  const restaurantCtx = useContext(RestaurantContext);
+  const { setSelectedRes } = restaurantCtx;
+
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
       color: "#d32f2f",
@@ -27,6 +32,10 @@ function RestaurantCard({ uuid, name, rating, type, cuisine, imageUrl }) {
     }
   `;
 
+  const handleRestaurantClick = (restaurant) => {
+    setSelectedRes(restaurant);
+  };
+
   return (
     <Grid
       item
@@ -35,68 +44,69 @@ function RestaurantCard({ uuid, name, rating, type, cuisine, imageUrl }) {
       sm={6}
       md={4}
       lg={3}
-      key={uuid}
+      key={props.uuid}
       className={styles.cardcontainer}
     >
       <CardContent>
         <Card className={styles.cardinner}>
-          {/* <Link
-                key={restaurant.uuid}
-                to={`/details/${restaurant.uuid}`}
-                state={restaurant}
-              > */}
-          <CardMedia
-            className={styles.cardimg}
-            component="img"
-            image={imageUrl}
-            alt={`Image for ${name}`}
-          />
-          <div className={styles.cardcontent}>
-            <div className={styles.cardinnercontent}>
-              <Typography
-                variant="h6"
-                className={styles.cardheader}
-                sx={{ marginBottom: 1, marginTop: 1 }}
-              >
-                {name}
-              </Typography>
-              <div className={styles.ratingcontainer}>
-                <StyledRating
-                  name="read-only"
-                  value={rating}
-                  precision={0.5}
-                  readOnly
-                />
+          <Link
+            key={props.uuid}
+            to={`/details/${props.uuid}`}
+            onClick={() => handleRestaurantClick(props)}
+            className="link-style"
+          >
+            <CardMedia
+              className={styles.cardimg}
+              component="img"
+              image={props.imageUrl}
+              alt={`Image for ${props.name}`}
+            />
+            <div className={styles.cardcontent}>
+              <div className={styles.cardinnercontent}>
                 <Typography
-                  variant="p"
-                  className={styles.ratingtext}
-                  color="text.secondary"
+                  variant="h6"
+                  className={styles.cardheader}
+                  sx={{ marginBottom: 1, marginTop: 1 }}
                 >
-                  {rating}
+                  {props.name}
                 </Typography>
-              </div>
-              <div className={styles.tagcontainer}>
-                <Typography
-                  className={styles.taginfo}
-                  color="text.secondary"
-                  variant="p"
-                >
-                  {type}
-                  {cuisine && <span>,&nbsp;</span>}
-                </Typography>
-                {cuisine && (
+                <div className={styles.ratingcontainer}>
+                  <StyledRating
+                    name="read-only"
+                    value={props.rating}
+                    precision={0.5}
+                    readOnly
+                  />
+                  <Typography
+                    variant="p"
+                    className={styles.ratingtext}
+                    color="text.secondary"
+                  >
+                    {props.rating}
+                  </Typography>
+                </div>
+                <div className={styles.tagcontainer}>
                   <Typography
                     className={styles.taginfo}
                     color="text.secondary"
                     variant="p"
                   >
-                    {cuisine}
+                    {props.type}
+                    {props.cuisine && <span>,&nbsp;</span>}
                   </Typography>
-                )}
+                  {props.cuisine && (
+                    <Typography
+                      className={styles.taginfo}
+                      color="text.secondary"
+                      variant="p"
+                    >
+                      {props.cuisine}
+                    </Typography>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          {/* </Link> */}
+          </Link>
           {/* {isLoggedIn && <Divider light variant="middle" />}
                <CardActions className={styles.addfavsection}>
                  {isLoggedIn && (

@@ -1,20 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  Chip,
-  Container,
-  Rating,
-  Typography,
-  IconButton,
-} from "@mui/material";
-import { useLocation, useParams } from "react-router-dom";
+import { Box, Container, Rating, Typography, IconButton } from "@mui/material";
 import UserContext from "../context/UserContext";
 import { Add, Favorite, FavoriteBorder } from "@mui/icons-material";
-import sample from "../assets/homeimg1.jpg";
 import styles from "./RestaurantDetail.module.css";
 import Map from "../components/Map";
 import { styled } from "@mui/material/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import RestaurantContext from "../context/RestaurantContext";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -39,14 +31,12 @@ const FavIconBtn = styled(IconButton)`
 `;
 
 function RestaurantDetail() {
-  const uselocation = useLocation();
-  // console.log("location.state", uselocation);
-
-  const restaurant = uselocation.state;
-  // console.log("selected restaurant details:", restaurant);
-
   const userCtx = useContext(UserContext);
   const { userList, setUserList, isLoggedIn } = userCtx;
+
+  // Update: use restaurantContext instead of uselocation.state
+  const restaurantCtx = useContext(RestaurantContext);
+  const { selectedRes } = restaurantCtx;
 
   const {
     uuid,
@@ -60,7 +50,7 @@ function RestaurantDetail() {
     businessHour,
     location,
     officialWebsite,
-  } = restaurant;
+  } = selectedRes;
 
   const [isSaved, setIsSaved] = useState(false);
 
@@ -69,7 +59,7 @@ function RestaurantDetail() {
     setIsSaved(userList.some((item) => item.uuid === uuid));
   }, [userList, uuid]);
 
-  if (!restaurant) {
+  if (!selectedRes) {
     return <div style={styles.container}>Restaurant not found</div>;
   }
 
@@ -83,7 +73,7 @@ function RestaurantDetail() {
       //   id: uuid,
       //   type: type,
       // };
-      const newList = [...userList, restaurant];
+      const newList = [...userList, selectedRes];
 
       setUserList(newList);
     }

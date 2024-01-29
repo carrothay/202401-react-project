@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useContext, useState } from "react";
 import { Container, Button } from "@mui/material";
 import Filter from "./Filter";
 import RestaurantTable from "./RestaurantTable";
-
 import styles from "./Filter.module.css";
+import RestaurantContext from "../context/RestaurantContext";
 
-function RestaurantListing({
-  restaurants,
-  fetchMoreData,
-  loadMore,
-  totalRecords,
-}) {
+function RestaurantListing() {
+  const restaurantCtx = useContext(RestaurantContext);
+  const { restaurants, fetchMoreRestaurants, loadMore, totalRecords } =
+    restaurantCtx;
+
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
   const [filtered, setFiltered] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const clearFilters = () => {
     setFilteredRestaurants([]);
@@ -33,9 +30,9 @@ function RestaurantListing({
           filteredRestaurants={filteredRestaurants}
           setFilteredRestaurants={setFilteredRestaurants}
         />
-        {filtered && filteredRestaurants?.length > 0 && (
+        {/* {filtered && filteredRestaurants?.length > 0 && (
           <RestaurantTable restaurants={filteredRestaurants} />
-        )}
+        )} */}
 
         {filtered && filteredRestaurants?.length === 0 && (
           <p className={styles.noresults}>
@@ -48,14 +45,14 @@ function RestaurantListing({
             <h4 className={styles.resultsheadline}>
               {restaurants.length} of {totalRecords} results
             </h4>
-            <RestaurantTable restaurants={restaurants} />
+            <RestaurantTable />
             {loadMore ? (
               <Button
                 className={styles.loadmorebutton}
                 variant="contained"
                 size="medium"
                 sx={{ m: 2 }}
-                onClick={fetchMoreData}
+                onClick={fetchMoreRestaurants}
               >
                 Load More Results
               </Button>

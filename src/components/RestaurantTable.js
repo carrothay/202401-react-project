@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import RestaurantCard from "./RestaurantCard";
 import mediaApi from "../api/media-api";
 import Placeholder from "../assets/placeholder.jpg";
+import RestaurantContext from "../context/RestaurantContext";
 
 const cardtheme = createTheme({
   components: {
@@ -28,10 +29,13 @@ const cardtheme = createTheme({
   },
 });
 
-function RestaurantTable({ restaurants }) {
+function RestaurantTable() {
   const [imageData, setImageData] = useState([]);
   const userCtx = useContext(UserContext);
   const { userList, setUserList, isLoggedIn } = userCtx;
+
+  const restaurantCtx = useContext(RestaurantContext);
+  const { restaurants } = restaurantCtx;
 
   const axiosConfig = {
     responseType: "blob",
@@ -87,8 +91,6 @@ function RestaurantTable({ restaurants }) {
     initialFavIconActiveArray
   );
 
-  //   const { name, uuid, type } = restaurants;
-
   const handlerToggleProduct = (restaurant, index) => {
     const isSaved = userList.some(
       (savedRestaurant) => savedRestaurant.uuid === restaurant.uuid
@@ -107,8 +109,6 @@ function RestaurantTable({ restaurants }) {
     newArray[index] = !newArray[index];
     setFavIconActiveArray(newArray);
   };
-
-  //   console.log("userList:", userList);
 
   return (
     <ThemeProvider theme={cardtheme}>
