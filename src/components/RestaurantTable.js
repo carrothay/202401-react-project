@@ -1,9 +1,11 @@
 import styles from "./Card.module.css";
 import { Grid } from "@mui/material";
 import UserContext from "../context/UserContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import RestaurantCard from "./RestaurantCard";
+import mediaApi from "../api/media-api";
+import Placeholder from "../assets/placeholder.jpg";
 
 const cardtheme = createTheme({
   components: {
@@ -26,9 +28,56 @@ const cardtheme = createTheme({
   },
 });
 
-function RestaurantTable({ restaurants, imageData }) {
+function RestaurantTable({ restaurants }) {
+  const [imageData, setImageData] = useState([]);
   const userCtx = useContext(UserContext);
   const { userList, setUserList, isLoggedIn } = userCtx;
+
+  const axiosConfig = {
+    responseType: "blob",
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // setLoading(true);
+        const promises = restaurants.map(async (restaurant) => {
+          if (
+            // Added url that some object contains in images array
+            restaurant.images.length > 0 &&
+            restaurant.images[0]?.url !== ""
+          ) {
+            const urlWithoutApi = restaurant.images[0].url;
+            return urlWithoutApi;
+          }
+          if (
+            restaurant.images.length > 0 &&
+            restaurant.images[0]?.primaryFileMediumUuid
+          ) {
+            const response = await mediaApi.get(
+              `/${restaurant.images[0].primaryFileMediumUuid}`,
+              axiosConfig
+            );
+            const imageBlob = new Blob([response.data], {
+              type: response.headers["content-type"],
+            });
+            const imageUrl = URL.createObjectURL(imageBlob);
+            return imageUrl;
+          }
+          return Placeholder;
+        });
+        const imageUrls = await Promise.all(promises);
+        setImageData(imageUrls);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        // setLoading(false);
+        // console.log("done");
+      }
+    };
+
+    fetchData();
+    // console.log(restaurants);
+  }, [restaurants]);
 
   const initialFavIconActiveArray = restaurants.map((res) =>
     userList.some((saved) => saved.uuid === res.uuid)
@@ -73,8 +122,8 @@ function RestaurantTable({ restaurants, imageData }) {
           return (
             <RestaurantCard
               key={restaurant.uuid}
-              index={index}
-              imageData={imageData}
+              // props change to specific image data
+              imageUrl={imageData[index]}
               {...restaurant}
             />
           );

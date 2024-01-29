@@ -10,10 +10,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import styles from "./Card.module.css";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import GetUrlbyUuid from "./GetUrlbyUuid";
-import Placeholder from "../assets/placeholder.jpg";
 
-function RestaurantCard({ index, uuid, name, rating, type, cuisine, images }) {
+function RestaurantCard({ uuid, name, rating, type, cuisine, imageUrl }) {
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
       color: "#d32f2f",
@@ -28,25 +26,6 @@ function RestaurantCard({ index, uuid, name, rating, type, cuisine, images }) {
       color: #d32f2f;
     }
   `;
-
-  // Setting src value by conditions
-  let srcValue;
-  if (images.length === 0) {
-    srcValue = Placeholder;
-  } else if (
-    images.length !== 0 &&
-    images[0].primaryFileMediumUuid === "" &&
-    images[0].url === ""
-  ) {
-    srcValue = Placeholder;
-  } else if (images.length !== 0 && images[0].url !== "") {
-    srcValue = images[0].url;
-  } else if (images[0].primaryFileMediumUuid) {
-    const fnbUuid = images[0].primaryFileMediumUuid || "defaultUuid";
-    srcValue = GetUrlbyUuid(fnbUuid);
-  } else {
-    srcValue = Placeholder;
-  }
 
   return (
     <Grid
@@ -69,7 +48,7 @@ function RestaurantCard({ index, uuid, name, rating, type, cuisine, images }) {
           <CardMedia
             className={styles.cardimg}
             component="img"
-            image={srcValue}
+            image={imageUrl}
             alt={`Image for ${name}`}
           />
           <div className={styles.cardcontent}>

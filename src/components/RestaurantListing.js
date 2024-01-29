@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import mediaApi from "../api/media-api";
+
 import { Container, Button } from "@mui/material";
 import Filter from "./Filter";
 import RestaurantTable from "./RestaurantTable";
-import Placeholder from "../assets/placeholder.jpg";
+
 import styles from "./Filter.module.css";
 
 function RestaurantListing({
@@ -12,62 +12,10 @@ function RestaurantListing({
   loadMore,
   totalRecords,
 }) {
-  const [imageData, setImageData] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
   const [filtered, setFiltered] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const axiosConfig = {
-    responseType: "blob",
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const promises = restaurants.map(async (restaurant) => {
-          if (
-            // Added url that some object contains in images array
-            restaurant.images &&
-            restaurant.images.length > 0 &&
-            restaurant.images[0]?.url !== ""
-          ) {
-            const urlWithoutApi = restaurant.images[0].url;
-            return urlWithoutApi;
-          }
-          if (
-            restaurant.images &&
-            restaurant.images.length > 0 &&
-            restaurant.images[0]?.primaryFileMediumUuid
-          ) {
-            const response = await mediaApi.get(
-              `/${restaurant.images[0].primaryFileMediumUuid}`,
-              axiosConfig
-            );
-            const imageBlob = new Blob([response.data], {
-              type: response.headers["content-type"],
-            });
-            const imageUrl = URL.createObjectURL(imageBlob);
-            return imageUrl;
-          }
-          return Placeholder;
-        });
-
-        const imageUrls = await Promise.all(promises);
-        setImageData(imageUrls);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-        // console.log("done");
-      }
-    };
-
-    fetchData();
-
-    // console.log(restaurants);
-  }, [restaurants]);
 
   const clearFilters = () => {
     setFilteredRestaurants([]);
