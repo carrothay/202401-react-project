@@ -39,6 +39,8 @@ function RestaurantTable() {
     restaurants,
     filteredRestaurants,
     randomData,
+    offset,
+    setOffset,
     listToRender,
     setListToRender,
   } = restaurantCtx;

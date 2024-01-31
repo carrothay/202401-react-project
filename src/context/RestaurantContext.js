@@ -30,7 +30,7 @@ export function RestaurantProvider({ children }) {
         // console.log("No more data to load");
       }
 
-      if (restaurants.length === 0) {
+      if (offset === 0) {
         setRestaurants(newData);
       } else {
         setRestaurants((prevData) => [...prevData, ...newData]);

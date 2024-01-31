@@ -19,13 +19,14 @@ const SearchBar = ({ handlerKeyword }) => {
   const navigate = useNavigate();
 
   const restaurantCtx = useContext(RestaurantContext);
-  const { setRandomData } = restaurantCtx;
+  const { setRandomData, setOffset } = restaurantCtx;
 
   // When user presses enter key, set inputValue as userKeyword
   const handlerKeyDown = (e) => {
     if (inputValue !== "" && e.key === "Enter") {
       handlerKeyword(inputValue);
       setRandomData([]);
+      setOffset(0);
       navigate("/restaurants");
     }
   };
@@ -54,6 +55,7 @@ const SearchBar = ({ handlerKeyword }) => {
                   onClick={() => {
                     if (inputValue !== "") {
                       setRandomData([]);
+                      setOffset(0);
                       handlerKeyword(inputValue);
                     }
                   }}

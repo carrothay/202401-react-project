@@ -15,7 +15,7 @@ import { useContext } from "react";
 
 function RestaurantCard(props) {
   const restaurantCtx = useContext(RestaurantContext);
-  const { setSelectedRes } = restaurantCtx;
+  const { setSelectedRes, setOffset } = restaurantCtx;
 
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
@@ -34,6 +34,7 @@ function RestaurantCard(props) {
 
   const handleRestaurantClick = (restaurant) => {
     setSelectedRes(restaurant);
+    setOffset(0);
   };
 
   return (
