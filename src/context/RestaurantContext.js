@@ -10,6 +10,8 @@ export function RestaurantProvider({ children }) {
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(false);
   const [selectedRes, setSelectedRes] = useState(null);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const [listToRender, setListToRender] = useState(restaurants);
 
   const fetchRestaurants = async (userKeyword) => {
     try {
@@ -58,9 +60,13 @@ export function RestaurantProvider({ children }) {
     fetchRestaurants,
     fetchMoreRestaurants,
     setSelectedRes,
+    filteredRestaurants,
+    setFilteredRestaurants,
+    listToRender,
+    setListToRender,
   };
 
-  console.log("in context, selectedRes info:", selectedRes);
+  console.log("in context, listToRender info:", listToRender);
 
   return (
     <RestaurantContext.Provider value={contextValue}>

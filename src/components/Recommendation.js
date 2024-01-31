@@ -78,7 +78,7 @@ function Recommendation() {
       <h1 style={{ textAlign: "center", marginTop: "32px" }}>
         Recommended For You
       </h1>
-      <RestaurantTable restaurants={randomData} />
+      {/* <RestaurantTable restaurants={randomData} /> */}
     </>
   );
 }

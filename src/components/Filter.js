@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Button, Chip } from "@mui/material";
+import React, { useState, useEffect, useContext } from "react";
+import { Chip } from "@mui/material";
 import styles from "./Filter.module.css";
 import CheckIcon from "@mui/icons-material/Check";
+import RestaurantContext from "../context/RestaurantContext";
 
-function Filter({
-  restaurants,
-  clearFilters,
-  filtered,
-  setFiltered,
-  filteredRestaurants,
-  setFilteredRestaurants,
-}) {
+function Filter({ clearFilters, filtered, setFiltered }) {
+  const restaurantCtx = useContext(RestaurantContext);
+  const { restaurants, setFilteredRestaurants } = restaurantCtx;
+
   const [selectedFilters, setSelectedFilters] = useState({
     ratingRanges: [],
     types: [],
@@ -27,20 +24,18 @@ function Filter({
     typeOthers: false,
   });
 
-
   // use effect hook that takes in a function and and an array of dependency
-  // everytime the selectedFilters changes, will pass that in and apply the filter 
+  // everytime the selectedFilters changes, will pass that in and apply the filter
   useEffect(() => {
     applyFilters(selectedFilters);
   }, [selectedFilters]);
 
-
-  // passes in the selectedfilter 
+  // passes in the selectedfilter
   const applyFilters = (selectedFilters) => {
-    let filteredList = restaurants;
+    let filteredList = [...restaurants];
     // if filter for raitng is not empty
     if (selectedFilters.ratingRanges.length > 0) {
-      // Create the filtered list based on item.min (range) 
+      // Create the filtered list based on item.min (range)
       // filters each item in the restaurant list
       filteredList = filteredList.filter((item) =>
         selectedFilters.ratingRanges.some(
@@ -49,7 +44,7 @@ function Filter({
       );
     }
 
-    // for types, will filter further based on the ratings 
+    // for types, will filter further based on the ratings
     if (selectedFilters.types.length > 0) {
       filteredList = filteredList.filter((item) =>
         selectedFilters.types.includes(item.type)
@@ -59,7 +54,7 @@ function Filter({
     setFilteredRestaurants(filteredList);
   };
 
-  // Clear, u reset the button states to default and clear 
+  // Clear, u reset the button states to default and clear
   const handleClearFilters = () => {
     setSelectedFilters({ ratingRanges: [], types: [] });
     clearFilters();
@@ -76,36 +71,35 @@ function Filter({
     });
   };
 
-  // When toggleType or toggleRatingRange is called, clear auto set to false 
-  // then u switch the button state to the opposite, 
-  // like if u deselect it then will clear filter 
-  // button passed in tells them which state is changed 
+  // When toggleType or toggleRatingRange is called, clear auto set to false
+  // then u switch the button state to the opposite,
+  // like if u deselect it then will clear filter
+  // button passed in tells them which state is changed
   const toggleButton = (button) => {
     const updatedStates = { ...buttonStates, clear: false };
     updatedStates[button] = !buttonStates[button];
-    // updates the state to re-render this component only 
+    // updates the state to re-render this component only
     setButtonStates(updatedStates);
   };
 
-
-  // called upon click 
+  // called upon click
   const toggleRatingRange = (min, max) => {
-    // did this becasuse the statename cannot have . 
+    // did this becasuse the statename cannot have .
     const minKey = min === 4.5 ? "4_5" : min;
 
     toggleButton("ratingRange" + minKey);
 
-    // find matching array that matches min and max   
+    // find matching array that matches min and max
     const existingRangeIndex = selectedFilters.ratingRanges.findIndex(
       (range) => range.min === min && range.max === max
     );
 
-    // Manages the ratingRanges in selectedFilters state 
-    // so the filter will filter by the latest filter selected  
-    // if theres no existing range, will add to this range 
-    // if theres existing range 
+    // Manages the ratingRanges in selectedFilters state
+    // so the filter will filter by the latest filter selected
+    // if theres no existing range, will add to this range
+    // if theres existing range
     if (existingRangeIndex !== -1) {
-        // Creates a new array (copy of ratingRanges) using the spread operator
+      // Creates a new array (copy of ratingRanges) using the spread operator
       const newRanges = [...selectedFilters.ratingRanges];
       // Removes the existing range at the found index
       newRanges.splice(existingRangeIndex, 1);
@@ -207,6 +201,3 @@ function Filter({
 }
 
 export default Filter;
-
-
-

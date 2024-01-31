@@ -35,7 +35,18 @@ function RestaurantTable() {
   const { userList, setUserList, isLoggedIn } = userCtx;
 
   const restaurantCtx = useContext(RestaurantContext);
-  const { restaurants } = restaurantCtx;
+  const { restaurants, filteredRestaurants, listToRender, setListToRender } =
+    restaurantCtx;
+
+  useEffect(() => {
+    const newList =
+      filteredRestaurants.length > 0 ? filteredRestaurants : restaurants;
+    setListToRender(newList);
+    console.log("in Table List to render:", listToRender);
+    // Update listToRender whenever filteredRestaurants or restaurants change
+  }, [filteredRestaurants, restaurants]);
+
+  console.log("inside table list to render", listToRender);
 
   const axiosConfig = {
     responseType: "blob",
@@ -44,7 +55,7 @@ function RestaurantTable() {
     const fetchData = async () => {
       try {
         // setLoading(true);
-        const promises = restaurants.map(async (restaurant) => {
+        const promises = listToRender.map(async (restaurant) => {
           if (
             // Added url that some object contains in images array
             restaurant.images.length > 0 &&
@@ -81,7 +92,7 @@ function RestaurantTable() {
 
     fetchData();
     // console.log(restaurants);
-  }, [restaurants]);
+  }, [listToRender]);
 
   const initialFavIconActiveArray = restaurants.map((res) =>
     userList.some((saved) => saved.uuid === res.uuid)
@@ -118,7 +129,7 @@ function RestaurantTable() {
         className={styles.gridcontainer}
         sx={{ justifyContent: "flex-start" }}
       >
-        {restaurants.map((restaurant, index) => {
+        {listToRender.map((restaurant, index) => {
           return (
             <RestaurantCard
               key={restaurant.uuid}

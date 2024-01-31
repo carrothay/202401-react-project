@@ -7,10 +7,14 @@ import RestaurantContext from "../context/RestaurantContext";
 
 function RestaurantListing() {
   const restaurantCtx = useContext(RestaurantContext);
-  const { restaurants, fetchMoreRestaurants, loadMore, totalRecords } =
-    restaurantCtx;
-
-  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const {
+    restaurants,
+    fetchMoreRestaurants,
+    loadMore,
+    totalRecords,
+    filteredRestaurants,
+    setFilteredRestaurants,
+  } = restaurantCtx;
 
   const [filtered, setFiltered] = useState(false);
 
@@ -23,16 +27,11 @@ function RestaurantListing() {
     <>
       <Container sx={{ flexGrow: 1 }} maxWidth="lg">
         <Filter
-          restaurants={restaurants}
           clearFilters={clearFilters}
           filtered={filtered}
           setFiltered={setFiltered}
-          filteredRestaurants={filteredRestaurants}
-          setFilteredRestaurants={setFilteredRestaurants}
         />
-        {/* {filtered && filteredRestaurants?.length > 0 && (
-          <RestaurantTable restaurants={filteredRestaurants} />
-        )} */}
+        {filtered && filteredRestaurants?.length > 0 && <RestaurantTable />}
 
         {filtered && filteredRestaurants?.length === 0 && (
           <p className={styles.noresults}>
