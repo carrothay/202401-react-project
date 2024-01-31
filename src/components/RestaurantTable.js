@@ -35,16 +35,24 @@ function RestaurantTable() {
   const { userList, setUserList, isLoggedIn } = userCtx;
 
   const restaurantCtx = useContext(RestaurantContext);
-  const { restaurants, filteredRestaurants, listToRender, setListToRender } =
-    restaurantCtx;
+  const {
+    restaurants,
+    filteredRestaurants,
+    randomData,
+    listToRender,
+    setListToRender,
+  } = restaurantCtx;
 
   useEffect(() => {
     const newList =
-      filteredRestaurants.length > 0 ? filteredRestaurants : restaurants;
+      randomData.length > 0
+        ? randomData
+        : filteredRestaurants.length > 0
+        ? filteredRestaurants
+        : restaurants;
     setListToRender(newList);
     console.log("in Table List to render:", listToRender);
-    // Update listToRender whenever filteredRestaurants or restaurants change
-  }, [filteredRestaurants, restaurants]);
+  }, [filteredRestaurants, restaurants, randomData]);
 
   console.log("inside table list to render", listToRender);
 
@@ -54,36 +62,34 @@ function RestaurantTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // setLoading(true);
-        const promises = listToRender.map(async (restaurant) => {
-          if (
-            // Added url that some object contains in images array
-            restaurant.images.length > 0 &&
-            restaurant.images[0]?.url !== ""
-          ) {
-            const urlWithoutApi = restaurant.images[0].url;
-            return urlWithoutApi;
-          }
-          if (
-            restaurant.images.length > 0 &&
-            restaurant.images[0]?.primaryFileMediumUuid
-          ) {
-            const response = await mediaApi.get(
-              `/${restaurant.images[0].primaryFileMediumUuid}`,
-              axiosConfig
-            );
-            const imageBlob = new Blob([response.data], {
-              type: response.headers["content-type"],
-            });
-            const imageUrl = URL.createObjectURL(imageBlob);
+        const newImageData = await Promise.all(
+          listToRender.map(async (restaurant) => {
+            let imageUrl = Placeholder;
+
+            if (restaurant.images.length > 0) {
+              if (restaurant.images[0]?.url !== "") {
+                imageUrl = restaurant.images[0].url;
+              } else if (restaurant.images[0]?.primaryFileMediumUuid) {
+                const response = await mediaApi.get(
+                  `/${restaurant.images[0].primaryFileMediumUuid}`,
+                  axiosConfig
+                );
+                const imageBlob = new Blob([response.data], {
+                  type: response.headers["content-type"],
+                });
+                imageUrl = URL.createObjectURL(imageBlob);
+              }
+            }
             return imageUrl;
-          }
-          return Placeholder;
-        });
-        const imageUrls = await Promise.all(promises);
-        setImageData(imageUrls);
+          })
+        );
+
+        setImageData(newImageData);
       } catch (error) {
         console.error("Error fetching data:", error);
+        // If an error occurs, set placeholder image URL for all items
+        const placeholderImageData = listToRender.map(() => Placeholder);
+        setImageData(placeholderImageData);
       } finally {
         // setLoading(false);
         // console.log("done");
@@ -91,7 +97,6 @@ function RestaurantTable() {
     };
 
     fetchData();
-    // console.log(restaurants);
   }, [listToRender]);
 
   const initialFavIconActiveArray = restaurants.map((res) =>

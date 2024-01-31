@@ -2,12 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import fnbApi from "../api/fnb-api";
 import UserContext from "../context/UserContext";
 import RestaurantTable from "./RestaurantTable";
+import RestaurantContext from "../context/RestaurantContext";
 
 function Recommendation() {
-  const [randomData, setRandomData] = useState([]);
-
   const userCtx = useContext(UserContext);
   const { userList, setUserList, isLoggedIn } = userCtx;
+
+  const restaurantCtx = useContext(RestaurantContext);
+  const { randomData, setRandomData } = restaurantCtx;
 
   const initialFavIconActiveArray = randomData.map((res) =>
     userList.some((saved) => saved.uuid === res.uuid)
@@ -17,24 +19,6 @@ function Recommendation() {
     initialFavIconActiveArray
   );
 
-  const handlerToggleProduct = (restaurant, index) => {
-    const isSaved = userList.some(
-      (savedRestaurant) => savedRestaurant.uuid === restaurant.uuid
-    );
-
-    // If it's not saved, add to userList
-    if (!isSaved) {
-      const newList = [...userList, restaurant];
-      setUserList(newList);
-    } else {
-      const newList = userList.filter((item) => item.uuid !== restaurant.uuid);
-      setUserList(newList);
-    }
-
-    const newArray = [...favIconActiveArray];
-    newArray[index] = !newArray[index];
-    setFavIconActiveArray(newArray);
-  };
   // total results: 1011
   // [0, 20, 40 ... 1000]
   const offsetArray = new Array(51).fill(0).map((el, idx) => {
@@ -73,12 +57,31 @@ function Recommendation() {
     }
   };
 
+  const handlerToggleProduct = (restaurant, index) => {
+    const isSaved = userList.some(
+      (savedRestaurant) => savedRestaurant.uuid === restaurant.uuid
+    );
+
+    // If it's not saved, add to userList
+    if (!isSaved) {
+      const newList = [...userList, restaurant];
+      setUserList(newList);
+    } else {
+      const newList = userList.filter((item) => item.uuid !== restaurant.uuid);
+      setUserList(newList);
+    }
+
+    const newArray = [...favIconActiveArray];
+    newArray[index] = !newArray[index];
+    setFavIconActiveArray(newArray);
+  };
+
   return (
     <>
       <h1 style={{ textAlign: "center", marginTop: "32px" }}>
         Recommended For You
       </h1>
-      {/* <RestaurantTable restaurants={randomData} /> */}
+      <RestaurantTable />
     </>
   );
 }

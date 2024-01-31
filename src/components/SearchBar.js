@@ -1,11 +1,12 @@
 import { TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Header.module.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import { styled } from "@mui/material/styles";
+import RestaurantContext from "../context/RestaurantContext";
 
 const StyledTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -17,10 +18,14 @@ const SearchBar = ({ handlerKeyword }) => {
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
 
+  const restaurantCtx = useContext(RestaurantContext);
+  const { setRandomData } = restaurantCtx;
+
   // When user presses enter key, set inputValue as userKeyword
   const handlerKeyDown = (e) => {
     if (inputValue !== "" && e.key === "Enter") {
       handlerKeyword(inputValue);
+      setRandomData([]);
       navigate("/restaurants");
     }
   };
@@ -47,7 +52,10 @@ const SearchBar = ({ handlerKeyword }) => {
                   aria-label="search"
                   disabled={inputValue === ""}
                   onClick={() => {
-                    if (inputValue !== "") handlerKeyword(inputValue);
+                    if (inputValue !== "") {
+                      setRandomData([]);
+                      handlerKeyword(inputValue);
+                    }
                   }}
                 >
                   <SearchIcon />

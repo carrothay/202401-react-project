@@ -11,6 +11,7 @@ export function RestaurantProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [selectedRes, setSelectedRes] = useState(null);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const [randomData, setRandomData] = useState([]);
   const [listToRender, setListToRender] = useState(restaurants);
 
   const fetchRestaurants = async (userKeyword) => {
@@ -64,6 +65,8 @@ export function RestaurantProvider({ children }) {
     setFilteredRestaurants,
     listToRender,
     setListToRender,
+    randomData,
+    setRandomData,
   };
 
   console.log("in context, listToRender info:", listToRender);
