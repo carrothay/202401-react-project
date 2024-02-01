@@ -32,7 +32,7 @@ const FavIconBtn = styled(IconButton)`
 
 function RestaurantDetail() {
   const userCtx = useContext(UserContext);
-  const { userList, setUserList, isLoggedIn } = userCtx;
+  const { userList, handlerToggleSaved, isLoggedIn } = userCtx;
 
   // Update: use restaurantContext instead of uselocation.state
   const restaurantCtx = useContext(RestaurantContext);
@@ -63,22 +63,22 @@ function RestaurantDetail() {
     return <div style={styles.container}>Restaurant not found</div>;
   }
 
-  const handlerToggleProduct = () => {
-    if (isSaved) {
-      const newList = userList.filter((item) => item.uuid !== uuid);
-      setUserList(newList);
-    } else {
-      // const newItem = {
-      //   name: name,
-      //   id: uuid,
-      //   type: type,
-      // };
-      const newList = [...userList, selectedRes];
-
-      setUserList(newList);
-    }
+  const handlerFavourite = () => {
+    handlerToggleSaved(selectedRes);
     setIsSaved(!isSaved);
   };
+
+  // BEFORE UPDATE
+  // const handlerToggleProduct = () => {
+  //   if (isSaved) {
+  //     const newList = userList.filter((item) => item.uuid !== uuid);
+  //     setUserList(newList);
+  //   } else {
+  //     const newList = [...userList, selectedRes];
+  //     setUserList(newList);
+  //   }
+  //   setIsSaved(!isSaved);
+  // };
 
   // console.log("userList:", userList);
 
@@ -154,7 +154,7 @@ function RestaurantDetail() {
                   <FavIconBtn
                     className="override"
                     aria-label="add to favorites"
-                    onClick={handlerToggleProduct}
+                    onClick={handlerFavourite}
                   >
                     <FavIcon className={isSaved ? "override" : "selected"} />
                     <span className={styles.addfavcopy}>Add to Favorites</span>

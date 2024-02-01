@@ -1,8 +1,11 @@
 import {
   Card,
+  CardActions,
   CardContent,
   CardMedia,
+  Divider,
   Grid,
+  IconButton,
   Rating,
   Typography,
 } from "@mui/material";
@@ -11,11 +14,15 @@ import styles from "./Card.module.css";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import RestaurantContext from "../context/RestaurantContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import UserContext from "../context/UserContext";
 
 function RestaurantCard(props) {
+  const userCtx = useContext(UserContext);
+  const { userList, handlerToggleSaved, isLoggedIn } = userCtx;
   const restaurantCtx = useContext(RestaurantContext);
   const { setSelectedRes, setOffset } = restaurantCtx;
+  const [isSaved, setIsSaved] = useState(false);
 
   const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
@@ -35,6 +42,16 @@ function RestaurantCard(props) {
   const handleRestaurantClick = (restaurant) => {
     setSelectedRes(restaurant);
     setOffset(0);
+  };
+
+  // useEffect to update isSaved when userList changes
+  useEffect(() => {
+    setIsSaved(userList.some((item) => item.uuid === props.uuid));
+  }, [userList, props]);
+
+  const handlerFavourite = () => {
+    handlerToggleSaved(props);
+    setIsSaved(!isSaved);
   };
 
   return (
@@ -108,21 +125,17 @@ function RestaurantCard(props) {
               </div>
             </div>
           </Link>
-          {/* {isLoggedIn && <Divider light variant="middle" />}
-               <CardActions className={styles.addfavsection}>
-                 {isLoggedIn && (
-                   <IconButton
-                     aria-label="add to favorites"
-                     onClick={() => handlerToggleProduct(restaurant, index)}
-                   >
-                     <FavIcon
-                       className={
-                         favIconActiveArray[index] ? "override" : "selected"
-                       }
-                     />
-                   </IconButton>
-                 )} */}
-          {/* </CardActions> */}
+          {isLoggedIn && <Divider light variant="middle" />}
+          <CardActions className={styles.addfavsection}>
+            {isLoggedIn && (
+              <IconButton
+                aria-label="add to favorites"
+                onClick={handlerFavourite}
+              >
+                <FavIcon className={isSaved ? "override" : "selected"} />
+              </IconButton>
+            )}
+          </CardActions>
         </Card>
       </CardContent>
     </Grid>

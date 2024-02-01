@@ -78,6 +78,19 @@ export function UserProvider({ children }) {
     navigate("/");
   };
 
+  const handlerToggleSaved = (restaurant) => {
+    const existingIndex = userList.findIndex(
+      (item) => item.uuid === restaurant.uuid
+    );
+    if (existingIndex !== -1) {
+      const updatedList = [...userList];
+      updatedList.splice(existingIndex, 1);
+      setUserList(updatedList);
+    } else {
+      setUserList((prevList) => [...prevList, restaurant]);
+    }
+  };
+
   const context = {
     // ES6 enhanced obj literal
     // credentials: credentials, -> credentials
@@ -90,6 +103,7 @@ export function UserProvider({ children }) {
     userList: userList,
     setUserList: setUserList,
     validationErrors,
+    handlerToggleSaved,
   };
 
   return (

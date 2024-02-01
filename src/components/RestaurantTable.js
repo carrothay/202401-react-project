@@ -31,8 +31,6 @@ const cardtheme = createTheme({
 
 function RestaurantTable() {
   const [imageData, setImageData] = useState([]);
-  const userCtx = useContext(UserContext);
-  const { userList, setUserList, isLoggedIn } = userCtx;
 
   const restaurantCtx = useContext(RestaurantContext);
   const {
@@ -100,33 +98,6 @@ function RestaurantTable() {
 
     fetchData();
   }, [listToRender]);
-
-  const initialFavIconActiveArray = restaurants.map((res) =>
-    userList.some((saved) => saved.uuid === res.uuid)
-  );
-
-  const [favIconActiveArray, setFavIconActiveArray] = useState(
-    initialFavIconActiveArray
-  );
-
-  const handlerToggleProduct = (restaurant, index) => {
-    const isSaved = userList.some(
-      (savedRestaurant) => savedRestaurant.uuid === restaurant.uuid
-    );
-
-    // If it's not saved, add to userList
-    if (!isSaved) {
-      const newList = [...userList, restaurant];
-      setUserList(newList);
-    } else {
-      const newList = userList.filter((item) => item.uuid !== restaurant.uuid);
-      setUserList(newList);
-    }
-
-    const newArray = [...favIconActiveArray];
-    newArray[index] = !newArray[index];
-    setFavIconActiveArray(newArray);
-  };
 
   return (
     <ThemeProvider theme={cardtheme}>

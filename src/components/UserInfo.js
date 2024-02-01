@@ -9,16 +9,25 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
+import RestaurantContext from "../context/RestaurantContext";
 
 function UserInfo() {
   const userCtx = useContext(UserContext);
   const { credentials, userList, setUserList } = userCtx;
+
+  const restaurantCtx = useContext(RestaurantContext);
+  const { setOffset, setSelectedRes } = restaurantCtx;
 
   const handlerDeleteItem = (id) => {
     setUserList((prevList) => {
       const newList = prevList.filter((item) => item.uuid !== id);
       return newList;
     });
+  };
+
+  const handleRestaurantClick = (restaurant) => {
+    setSelectedRes(restaurant);
+    setOffset(0);
   };
 
   return (
@@ -42,12 +51,12 @@ function UserInfo() {
                 <TableCell component="th" scope="row">
                   <Link
                     to={`/details/${item.uuid}`}
-                    state={item}
                     style={{
                       textDecoration: "none",
                       borderBottom: "1px solid",
                       color: "initial",
                     }}
+                    onClick={() => handleRestaurantClick(item)}
                   >
                     {item.name}
                   </Link>
