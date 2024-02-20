@@ -1,12 +1,7 @@
 import { useState } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Restaurants, Home, DefaultPage } from "./pages";
+import { ErrorElement } from "./components";
 import RootLayout from "./layouts/RootLayout";
 import UserInfo from "./components/UserInfo";
 import UserLogin from "./components/UserLogin";
@@ -29,6 +24,9 @@ function App() {
       primary: {
         main: red[700],
       },
+      secondary: {
+        main: red[400],
+      },
     },
   });
 
@@ -44,10 +42,19 @@ function App() {
         {
           path: "restaurants",
           element: <Restaurants userKeyword={userKeyword} />,
+          errorElement: <ErrorElement />,
         },
-        { path: "details/:uuid", element: <RestaurantDetail /> },
-        { path: "user", element: <UserInfo /> },
-        { path: "login", element: <UserLogin /> },
+        {
+          path: "details/:uuid",
+          element: <RestaurantDetail />,
+          errorElement: <ErrorElement />,
+        },
+        { path: "user", element: <UserInfo />, errorElement: <ErrorElement /> },
+        {
+          path: "login",
+          element: <UserLogin />,
+          errorElement: <ErrorElement />,
+        },
       ],
     },
     {
