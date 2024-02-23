@@ -68,20 +68,6 @@ function RestaurantDetail() {
     setIsSaved(!isSaved);
   };
 
-  // BEFORE UPDATE
-  // const handlerToggleProduct = () => {
-  //   if (isSaved) {
-  //     const newList = userList.filter((item) => item.uuid !== uuid);
-  //     setUserList(newList);
-  //   } else {
-  //     const newList = [...userList, selectedRes];
-  //     setUserList(newList);
-  //   }
-  //   setIsSaved(!isSaved);
-  // };
-
-  // console.log("userList:", userList);
-
   const groupedByDay = businessHour.reduce((acc, hour) => {
     const day = hour.day.replace(/_/g, " ");
     acc[day] = acc[day] || [];
@@ -103,7 +89,7 @@ function RestaurantDetail() {
   return (
     <>
       <Box className={styles.detailbackground}></Box>
-      <Container>
+      <Container sx={{ flexGrow: 1, mx: "auto", px: 8, maxWidth: "lg" }}>
         <div className={styles.detailsContainer}>
           <div className={styles.detailsMain}>
             <section className={styles.mainInfo}>

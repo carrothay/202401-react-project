@@ -24,9 +24,12 @@ function Home() {
         </div>
       </Container>
 
-      <Container sx={{ height: 500 }}>
+      <Container>
         <Recommendation />
       </Container>
+      {/* <Container sx={{ height: 500 }}>
+        <Recommendation />
+      </Container> */}
     </>
   );
 }

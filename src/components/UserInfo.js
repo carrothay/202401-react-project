@@ -54,7 +54,7 @@ function UserInfo() {
                     style={{
                       textDecoration: "none",
                       borderBottom: "1px solid",
-                      color: "initial",
+                      color: "inherit",
                     }}
                     onClick={() => handleRestaurantClick(item)}
                   >

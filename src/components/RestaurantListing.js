@@ -25,7 +25,7 @@ function RestaurantListing() {
 
   return (
     <>
-      <Container sx={{ flexGrow: 1 }} maxWidth="lg">
+      <Container sx={{ flexGrow: 1, mx: "auto", px: 8, maxWidth: "lg" }}>
         <Filter
           clearFilters={clearFilters}
           filtered={filtered}
