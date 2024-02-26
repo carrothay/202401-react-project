@@ -27,6 +27,7 @@ const FavIconBtn = styled(IconButton)`
   &.override {
     border-radius: 5px;
     padding-left: 0px;
+    border: 1px solid;
   }
 `;
 

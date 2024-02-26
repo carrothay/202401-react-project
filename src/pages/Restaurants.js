@@ -33,9 +33,11 @@ const Restaurants = ({ userKeyword }) => {
           <PropagateLoader color="#e57373" />
         </div>
       ) : totalRecords === 0 ? (
-        <h4 style={{ marginLeft: "100px" }}>
-          Sorry, we couldn't find any results. Please try again.
-        </h4>
+        <div style={{ height: "100vh" }}>
+          <h4 style={{ marginLeft: "100px" }}>
+            Sorry, we couldn't find any results. Please try again.
+          </h4>
+        </div>
       ) : (
         <RestaurantListing />
       )}

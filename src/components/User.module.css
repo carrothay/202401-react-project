@@ -1,6 +1,6 @@
-.userBarContainer {
+/* .userBarContainer {
   display: inline-block;
-}
+} */
 
 .loginform {
   max-width: 320px;
@@ -33,8 +33,8 @@
 @media (max-width: 599px) {
   .userBarContainer {
     position: absolute;
-    right: 0;
-    top: 12px;
-    right: 20px;
+    top: 22px;
+    /* top: 12px;
+    right: 20px; */
   }
 }

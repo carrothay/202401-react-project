@@ -54,7 +54,6 @@ function RestaurantTable() {
     console.log("in Table List to render:", listToRender);
   }, [filteredRestaurants, restaurants, randomData]);
 
-  console.log("inside table list to render", listToRender);
 
   const axiosConfig = {
     responseType: "blob",
