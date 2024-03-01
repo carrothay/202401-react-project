@@ -30,11 +30,9 @@
   height: 100vh;
 }
 
-@media (max-width: 599px) {
+/* @media (max-width: 599px) {
   .userBarContainer {
     position: absolute;
     top: 22px;
     /* top: 12px;
     right: 20px; */
-  }
-}

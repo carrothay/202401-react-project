@@ -34,12 +34,7 @@ function DefaultPage() {
             <span> {location.pathname}</span>
           </TextBody>
           <div>
-            <Button
-              variant="contained"
-              color="secondary"
-              component={Link}
-              to="/"
-            >
+            <Button variant="contained" component={Link} to="/">
               Go back home
             </Button>
           </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Restaurants, Home, DefaultPage } from "./pages";
+import { Restaurants, Home, DefaultPage, About } from "./pages";
 import {
   ErrorElement,
   UserInfo,
@@ -45,6 +45,7 @@ function App() {
           element: <UserLogin />,
           errorElement: <ErrorElement />,
         },
+        { path: "about", element: <About />, errorElement: <ErrorElement /> },
       ],
     },
     {

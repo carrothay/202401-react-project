@@ -23,6 +23,9 @@ export function ColorModeProvider({ children }) {
             primary: {
               main: red[700],
             },
+            secondary: {
+              main: red[50],
+            },
             text: {
               primary: grey[900],
               secondary: grey[600],
@@ -32,6 +35,9 @@ export function ColorModeProvider({ children }) {
             // for dark mode
             primary: {
               main: red[300],
+            },
+            secondary: {
+              main: red[200],
             },
             text: {
               primary: "#fff",
