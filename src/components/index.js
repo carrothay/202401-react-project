@@ -5,3 +5,5 @@ export { default as UserLogin } from "./UserLogin";
 export { default as RestaurantDetail } from "./RestaurantDetail";
 export { default as SearchBar } from "./SearchBar";
 export { default as UserBar } from "./UserBar";
+export { default as Recommendation } from "./Recommendation";
+export { default as Hero } from "./Hero";

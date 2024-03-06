@@ -5,19 +5,19 @@ import RestaurantTable from "./RestaurantTable";
 import RestaurantContext from "../context/RestaurantContext";
 
 function Recommendation() {
-  const userCtx = useContext(UserContext);
-  const { userList, setUserList, isLoggedIn } = userCtx;
+  // const userCtx = useContext(UserContext);
+  // const { userList, setUserList, isLoggedIn } = userCtx;
 
   const restaurantCtx = useContext(RestaurantContext);
   const { randomData, setRandomData } = restaurantCtx;
 
-  const initialFavIconActiveArray = randomData.map((res) =>
-    userList.some((saved) => saved.uuid === res.uuid)
-  );
+  // const initialFavIconActiveArray = randomData.map((res) =>
+  //   userList.some((saved) => saved.uuid === res.uuid)
+  // );
 
-  const [favIconActiveArray, setFavIconActiveArray] = useState(
-    initialFavIconActiveArray
-  );
+  // const [favIconActiveArray, setFavIconActiveArray] = useState(
+  //   initialFavIconActiveArray
+  // );
 
   // total results: 1011
   // [0, 20, 40 ... 1000]
@@ -42,39 +42,35 @@ function Recommendation() {
       const response = await fnbApi.get(
         `/search?searchType=keyword&searchValues=Restaurants%2C%20Cafe%2C%20Hawker%20Centres%2C%20Others%2C%20Food%2C%20Beverages&offset=${offset}`
       );
-      // console.log(response.data);
       if (response.data) {
         const newData = response.data.data || "wrong";
         setRandomData(newData);
-        // console.log(randomData);
       } else {
         console.error("Invalid response format");
       }
     } catch (error) {
       console.log("error:", error.message);
-    } finally {
-      // console.log("restaurants loaded");
     }
   };
 
-  const handlerToggleProduct = (restaurant, index) => {
-    const isSaved = userList.some(
-      (savedRestaurant) => savedRestaurant.uuid === restaurant.uuid
-    );
+  // const handlerToggleProduct = (restaurant, index) => {
+  //   const isSaved = userList.some(
+  //     (savedRestaurant) => savedRestaurant.uuid === restaurant.uuid
+  //   );
 
-    // If it's not saved, add to userList
-    if (!isSaved) {
-      const newList = [...userList, restaurant];
-      setUserList(newList);
-    } else {
-      const newList = userList.filter((item) => item.uuid !== restaurant.uuid);
-      setUserList(newList);
-    }
+  //   // If it's not saved, add to userList
+  //   if (!isSaved) {
+  //     const newList = [...userList, restaurant];
+  //     setUserList(newList);
+  //   } else {
+  //     const newList = userList.filter((item) => item.uuid !== restaurant.uuid);
+  //     setUserList(newList);
+  //   }
 
-    const newArray = [...favIconActiveArray];
-    newArray[index] = !newArray[index];
-    setFavIconActiveArray(newArray);
-  };
+  //   const newArray = [...favIconActiveArray];
+  //   newArray[index] = !newArray[index];
+  //   setFavIconActiveArray(newArray);
+  // };
 
   return (
     <>
