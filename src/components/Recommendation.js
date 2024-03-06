@@ -19,8 +19,7 @@ function Recommendation() {
   //   initialFavIconActiveArray
   // );
 
-  // total results: 1011
-  // [0, 20, 40 ... 1000]
+  // Total results: 1011, Array should be: [0, 20, 40 ... 1000]
   const offsetArray = new Array(51).fill(0).map((el, idx) => {
     return idx * 20;
   });
@@ -29,12 +28,20 @@ function Recommendation() {
     return offsetArray[Math.floor(Math.random() * offsetArray.length)];
   };
 
-  const [randomOffset, setRandomOffset] = useState(getRandomOffset);
+  const [randomOffset, setRandomOffset] = useState(() => {
+    if (randomData.length === 0) {
+      return getRandomOffset();
+    }
+  });
 
   // useEffect to fetch data when randomOffset changes
   useEffect(() => {
-    // console.log("random offset: ", randomOffset);
+    console.log("random offset: ", randomOffset);
+    if (randomData.length !== 0) {
+      return;
+    }
     getRandom(randomOffset);
+    console.log(randomData);
   }, [randomOffset]);
 
   const getRandom = async (offset) => {
@@ -52,6 +59,9 @@ function Recommendation() {
       console.log("error:", error.message);
     }
   };
+
+  // when randomData changes, reload the component
+  useEffect(() => {}, [randomData]);
 
   // const handlerToggleProduct = (restaurant, index) => {
   //   const isSaved = userList.some(

@@ -17,7 +17,7 @@ const SearchBar = ({ handlerKeyword }) => {
   const handlerKeyDown = (e) => {
     if (inputValue !== "" && e.key === "Enter") {
       handlerKeyword(inputValue);
-      setRandomData([]);
+      // setRandomData([]);
       setOffset(0);
       navigate("/restaurants");
     }
@@ -45,7 +45,7 @@ const SearchBar = ({ handlerKeyword }) => {
                 disabled={inputValue === ""}
                 onClick={() => {
                   if (inputValue !== "") {
-                    setRandomData([]);
+                    // setRandomData([]);
                     setOffset(0);
                     handlerKeyword(inputValue);
                   }

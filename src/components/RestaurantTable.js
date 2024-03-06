@@ -7,6 +7,7 @@ import RestaurantCard from "./RestaurantCard";
 import mediaApi from "../api/media-api";
 import Placeholder from "../assets/placeholder.jpg";
 import RestaurantContext from "../context/RestaurantContext";
+import { useLocation } from "react-router-dom";
 
 const cardtheme = createTheme({
   components: {
@@ -37,23 +38,28 @@ function RestaurantTable() {
     restaurants,
     filteredRestaurants,
     randomData,
-    offset,
-    setOffset,
     listToRender,
     setListToRender,
   } = restaurantCtx;
+  const location = useLocation();
 
   useEffect(() => {
-    const newList =
-      randomData.length > 0
-        ? randomData
-        : filteredRestaurants.length > 0
-        ? filteredRestaurants
-        : restaurants;
+    let newList = [];
+    // If user is at the main page
+    if (randomData.length > 0 && location.pathname === "/") {
+      newList = randomData;
+    }
+    // If there is filtered search list
+    else if (filteredRestaurants.length > 0) {
+      newList = filteredRestaurants;
+    }
+    // If there is search list
+    else if (restaurants.length > 0) {
+      newList = restaurants;
+    }
     setListToRender(newList);
     console.log("in Table List to render:", listToRender);
-  }, [filteredRestaurants, restaurants, randomData]);
-
+  }, [filteredRestaurants, restaurants, randomData, location.pathname]);
 
   const axiosConfig = {
     responseType: "blob",
