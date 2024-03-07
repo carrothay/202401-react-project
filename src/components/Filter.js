@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Chip } from "@mui/material";
 import styles from "./Filter.module.css";
-import CheckIcon from "@mui/icons-material/Check";
 import RestaurantContext from "../context/RestaurantContext";
+import FilterChip from "./FilterChip";
 
 function Filter({ clearFilters, filtered, setFiltered }) {
   const restaurantCtx = useContext(RestaurantContext);
@@ -11,17 +10,6 @@ function Filter({ clearFilters, filtered, setFiltered }) {
   const [selectedFilters, setSelectedFilters] = useState({
     ratingRanges: [],
     types: [],
-  });
-
-  const [buttonStates, setButtonStates] = useState({
-    clear: false,
-    ratingRange3: false,
-    ratingRange4: false,
-    ratingRange4_5: false,
-    typeRestaurants: false,
-    typeCafe: false,
-    typeHawkerCentres: false,
-    typeOthers: false,
   });
 
   // use effect hook that takes in a function and and an array of dependency
@@ -54,86 +42,41 @@ function Filter({ clearFilters, filtered, setFiltered }) {
     setFilteredRestaurants(filteredList);
   };
 
-  // Clear, u reset the button states to default and clear
   const handleClearFilters = () => {
     setSelectedFilters({ ratingRanges: [], types: [] });
     clearFilters();
     setFiltered(false);
-    setButtonStates({
-      clear: true,
-      ratingRange3: false,
-      ratingRange4: false,
-      ratingRange4_5: false,
-      typeRestaurants: false,
-      typeCafe: false,
-      typeHawkerCentres: false,
-      typeOthers: false,
-    });
   };
 
-  // When toggleType or toggleRatingRange is called, clear auto set to false
-  // then u switch the button state to the opposite,
-  // like if u deselect it then will clear filter
-  // button passed in tells them which state is changed
-  const toggleButton = (button) => {
-    const updatedStates = { ...buttonStates, clear: false };
-    updatedStates[button] = !buttonStates[button];
-    // updates the state to re-render this component only
-    setButtonStates(updatedStates);
-  };
+  // handles the toggling behavior for all filter types, based on the parameters passed to it
+  const toggleFilter = (filterType, value) => {
+    const updatedFilters = { ...selectedFilters };
+    if (filterType === "ratingRanges") {
+      // Handling rating range toggle
+      const minRating = parseFloat(value);
+      const existingRangeIndex = updatedFilters.ratingRanges.findIndex(
+        (range) => range.min === minRating && range.max === 5
+      );
 
-  // called upon click
-  const toggleRatingRange = (min, max) => {
-    // did this becasuse the statename cannot have .
-    const minKey = min === 4.5 ? "4_5" : min;
-
-    toggleButton("ratingRange" + minKey);
-
-    // find matching array that matches min and max
-    const existingRangeIndex = selectedFilters.ratingRanges.findIndex(
-      (range) => range.min === min && range.max === max
-    );
-
-    // Manages the ratingRanges in selectedFilters state
-    // so the filter will filter by the latest filter selected
-    // if theres no existing range, will add to this range
-    // if theres existing range
-    if (existingRangeIndex !== -1) {
-      // Creates a new array (copy of ratingRanges) using the spread operator
-      const newRanges = [...selectedFilters.ratingRanges];
-      // Removes the existing range at the found index
-      newRanges.splice(existingRangeIndex, 1);
-      // Sets the selectedFilters with the updated ratingRanges
-      setSelectedFilters({ ...selectedFilters, ratingRanges: newRanges });
+      if (existingRangeIndex === -1) {
+        updatedFilters.ratingRanges = [
+          ...updatedFilters.ratingRanges,
+          { min: minRating, max: 5 },
+        ];
+      } else {
+        updatedFilters.ratingRanges.splice(existingRangeIndex, 1);
+      }
     } else {
-      setSelectedFilters({
-        ...selectedFilters,
-        ratingRanges: [...selectedFilters.ratingRanges, { min, max }],
-      });
+      // Handling other filter types
+      const filterIndex = updatedFilters[filterType].indexOf(value);
+      if (filterIndex === -1) {
+        updatedFilters[filterType] = [...updatedFilters[filterType], value];
+      } else {
+        updatedFilters[filterType].splice(filterIndex, 1);
+      }
     }
 
-    setFiltered(true);
-  };
-
-  const toggleType = (type) => {
-    const typeKey = type === "Hawker Centres" ? "HawkerCentres" : type;
-    toggleButton("type" + typeKey);
-
-    // search for existing range in selectedFilters.ratingRanges
-    const existingTypeIndex = selectedFilters.types.indexOf(type);
-
-    // updating selected filters
-    if (existingTypeIndex !== -1) {
-      const newTypes = [...selectedFilters.types];
-      newTypes.splice(existingTypeIndex, 1);
-      setSelectedFilters({ ...selectedFilters, types: newTypes });
-    } else {
-      setSelectedFilters({
-        ...selectedFilters,
-        types: [...selectedFilters.types, type],
-      });
-    }
-
+    setSelectedFilters(updatedFilters);
     setFiltered(true);
   };
 
@@ -141,59 +84,62 @@ function Filter({ clearFilters, filtered, setFiltered }) {
     <div className={styles.filtersection}>
       <p className={styles.filterheadline}>What are you looking for?</p>
       <div className={styles.filtersectionitems}>
-        <Chip
+        <FilterChip
           label="All"
           onClick={handleClearFilters}
-          variant={buttonStates.clear ? "filled" : "outlined"}
+          variant="outlined"
+          selected={
+            selectedFilters.ratingRanges.length === 0 &&
+            selectedFilters.types.length === 0
+          }
         />
-        <Chip
+        <FilterChip
           label="Restaurants"
-          variant="filled"
-          onClick={() => toggleType("Restaurants")}
-          color={buttonStates.typeRestaurants ? "secondary" : "default"}
-          icon={buttonStates.typeRestaurants ? <CheckIcon /> : null}
+          onClick={() => toggleFilter("types", "Restaurants")}
+          color="secondary"
+          selected={selectedFilters.types.includes("Restaurants")}
         />
-        <Chip
+        <FilterChip
           label="Cafe"
-          variant="filled"
-          onClick={() => toggleType("Cafe")}
-          color={buttonStates.typeCafe ? "info" : "default"}
-          icon={buttonStates.typeCafe ? <CheckIcon /> : null}
+          onClick={() => toggleFilter("types", "Cafe")}
+          color="info"
+          selected={selectedFilters.types.includes("Cafe")}
         />
-        <Chip
+        <FilterChip
           label="Hawker Centres"
-          variant="filled"
-          onClick={() => toggleType("Hawker Centres")}
-          color={buttonStates.typeHawkerCentres ? "success" : "default"}
-          icon={buttonStates.typeHawkerCentres ? <CheckIcon /> : null}
+          onClick={() => toggleFilter("types", "Hawker Centres")}
+          color="success"
+          selected={selectedFilters.types.includes("Hawker Centres")}
         />
-        <Chip
+        <FilterChip
           label="Others"
-          variant="filled"
-          onClick={() => toggleType("Others")}
-          color={buttonStates.typeOthers ? "warning" : "default"}
-          icon={buttonStates.typeOthers ? <CheckIcon /> : null}
+          onClick={() => toggleFilter("types", "Others")}
+          color="warning"
+          selected={selectedFilters.types.includes("Others")}
         />
-        <Chip
-          label="⭐ 3+ "
-          variant="filled"
-          onClick={() => toggleRatingRange(3, 5)}
-          color={buttonStates.ratingRange3 ? "primary" : "default"}
-          icon={buttonStates.ratingRange3 ? <CheckIcon /> : null}
+        <FilterChip
+          label="⭐ 3+"
+          onClick={() => toggleFilter("ratingRanges", "3")}
+          color="primary"
+          selected={selectedFilters.ratingRanges.some(
+            (range) => range.min === 3
+          )}
         />
-        <Chip
+        <FilterChip
           label="⭐ 4+"
-          variant="filled"
-          onClick={() => toggleRatingRange(4, 5)}
-          color={buttonStates.ratingRange4 ? "primary" : "default"}
-          icon={buttonStates.ratingRange4 ? <CheckIcon /> : null}
+          onClick={() => toggleFilter("ratingRanges", "4")}
+          color="primary"
+          selected={selectedFilters.ratingRanges.some(
+            (range) => range.min === 4
+          )}
         />
-        <Chip
+        <FilterChip
           label="⭐ 4.5+"
-          variant="filled"
-          onClick={() => toggleRatingRange(4.5, 5)}
-          color={buttonStates.ratingRange4_5 ? "primary" : "default"}
-          icon={buttonStates.ratingRange4_5 ? <CheckIcon /> : null}
+          onClick={() => toggleFilter("ratingRanges", "4.5")}
+          color="primary"
+          selected={selectedFilters.ratingRanges.some(
+            (range) => range.min === 4.5
+          )}
         />
       </div>
     </div>
