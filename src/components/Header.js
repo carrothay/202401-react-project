@@ -21,7 +21,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
-  backgroundColor: alpha(theme.palette.common.white, 0.35),
+  // backgroundColor: alpha(theme.palette.common.white, 0.35),
   marginRight: theme.spacing(2),
   marginLeft: theme.spacing(1),
   width: "100%",

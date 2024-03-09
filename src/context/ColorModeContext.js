@@ -24,7 +24,7 @@ export function ColorModeProvider({ children }) {
               main: red[700],
             },
             secondary: {
-              main: red[50],
+              main: grey[50],
             },
             text: {
               primary: grey[900],
