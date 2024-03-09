@@ -34,7 +34,7 @@ const SearchBar = ({ handlerKeyword }) => {
       onChange={(e) => setInputValue(e.target.value)}
       onKeyDown={handlerKeyDown}
       onFocus={() => setInputValue("")}
-      sx={{ width: 380 }}
+      sx={{ width: { xs: 230, sm: 380 } }}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
