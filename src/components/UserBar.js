@@ -1,21 +1,17 @@
-import { useContext, useState } from "react";
-import UserContext from "../context/UserContext";
-import { Box, Button, IconButton, Menu, MenuItem } from "@mui/material";
-import styles from "./User.module.css";
+import { useState } from "react";
+import { Box, IconButton, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../context/userSlice";
+import { logoutUser, selectUser } from "../context/userSlice";
 import { AccountCircle } from "@mui/icons-material";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
 function UserBar() {
-  // const userCtx = useContext(UserContext);
-  // const { credentials, handleLogout, isLoggedIn } = userCtx;
+  const user = useSelector(selectUser);
   const [anchorEl, setAnchorEl] = useState(null);
   const isProfileMenuOpen = Boolean(anchorEl);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const user = useSelector((state) => state.userState.user);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,10 +24,10 @@ function UserBar() {
     navigate("/");
     dispatch(logoutUser());
   };
-  const handlerLogin = () => {
+  const handlerLoginPage = () => {
     navigate("/login");
   };
-  const handlerViewList = () => {
+  const handlerSavedPage = () => {
     navigate("/user");
   };
 
@@ -52,10 +48,23 @@ function UserBar() {
       open={isProfileMenuOpen}
       onClose={handleProfileMenuClose}
     >
-      <MenuItem onClick={handlerLogin}>Log In</MenuItem>
-      <MenuItem onClick={handleProfileMenuClose}>Sign In</MenuItem>
-      <MenuItem onClick={handlerViewList}>My List</MenuItem>
-      <MenuItem onClick={handlerLogout}>Log Out</MenuItem>
+      {user
+        ? [
+            <MenuItem key="my-list" onClick={handlerSavedPage}>
+              My List
+            </MenuItem>,
+            <MenuItem key="logout" onClick={handlerLogout}>
+              Log Out
+            </MenuItem>,
+          ]
+        : [
+            <MenuItem key="login" onClick={handlerLoginPage}>
+              Log In
+            </MenuItem>,
+            <MenuItem key="sign-in" onClick={handleProfileMenuClose}>
+              Sign In
+            </MenuItem>,
+          ]}
     </Menu>
   );
 
@@ -75,6 +84,7 @@ function UserBar() {
             <AccountCircle />
           </IconButton>
         </Box>
+        {/* For small screen */}
         <Box sx={{ display: { xs: "block", md: "none" } }}>
           <IconButton
             size="large"
@@ -88,31 +98,6 @@ function UserBar() {
           </IconButton>
         </Box>
       </Box>
-
-      {/* {!isLoggedIn ? (
-        <Button
-          variant="contained"
-          className={styles.loginbutton}
-          sx={{ ml: 0.5 }}
-          onClick={handlerLogin}
-        >
-          Login
-        </Button>
-      ) : (
-        <>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handlerViewList}
-            sx={{ mr: 1 }}
-          >
-            {credentials.username}
-          </Button>
-          <Button variant="outlined" color="primary" onClick={handleLogout}>
-            Logout
-          </Button>
-        </>
-      )} */}
       {renderProfileMenu}
     </>
   );

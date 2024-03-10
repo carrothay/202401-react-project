@@ -10,20 +10,25 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
 import RestaurantContext from "../context/RestaurantContext";
+import { useSelector } from "react-redux";
+import { selectUser } from "../context/userSlice";
 
 function UserInfo() {
-  const userCtx = useContext(UserContext);
-  const { credentials, userList, setUserList } = userCtx;
+  // const userCtx = useContext(UserContext);
+  // const { credentials, userList, setUserList } = userCtx;
 
   const restaurantCtx = useContext(RestaurantContext);
   const { setOffset, setSelectedRes } = restaurantCtx;
 
-  const handlerDeleteItem = (id) => {
-    setUserList((prevList) => {
-      const newList = prevList.filter((item) => item.uuid !== id);
-      return newList;
-    });
-  };
+  const user = useSelector(selectUser);
+  console.log(user.username);
+
+  // const handlerDeleteItem = (id) => {
+  //   setUserList((prevList) => {
+  //     const newList = prevList.filter((item) => item.uuid !== id);
+  //     return newList;
+  //   });
+  // };
 
   const handleRestaurantClick = (restaurant) => {
     setSelectedRes(restaurant);
@@ -32,7 +37,7 @@ function UserInfo() {
 
   return (
     <div className={styles.listtable}>
-      <h2>{credentials.username}'s Saved Places</h2>
+      <h2>{user.username}'s Saved Places</h2>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -42,7 +47,7 @@ function UserInfo() {
               <TableCell align="right">Delete</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          {/* <TableBody>
             {userList.map((item) => (
               <TableRow
                 key={item.uuid}
@@ -71,7 +76,7 @@ function UserInfo() {
                 </TableCell>
               </TableRow>
             ))}
-          </TableBody>
+          </TableBody> */}
         </Table>
       </TableContainer>
     </div>

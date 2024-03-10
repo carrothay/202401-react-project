@@ -4,79 +4,78 @@ import Joi from "joi-browser";
 
 const UserContext = createContext();
 
-const initialCredentials = {
-  username: "",
-  password: "",
-};
+// const initialCredentials = {
+//   username: "",
+//   password: "",
+// };
 
-const schema = {
-  username: Joi.string().min(4).max(20).required(),
-  password: Joi.string().min(4).max(20).required(),
-  //   password: Joi.string()
-  //     .min(4)
-  //     .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-  //     .required(),
-};
+// const schema = {
+//   username: Joi.string().min(4).max(20).required(),
+//   password: Joi.string().min(4).max(20).required(),
+//   //   password: Joi.string()
+//   //     .min(4)
+//   //     .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+//   //     .required(),
+// };
 
 export function UserProvider({ children }) {
   // manage the user credentials state here
-  const [credentials, setCredentials] = useState(initialCredentials);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [credentials, setCredentials] = useState(initialCredentials);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [userList, setUserList] = useState([]);
 
-  const [validationErrors, setValidationErrors] = useState({});
+  // const [validationErrors, setValidationErrors] = useState({});
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handlerChangeCredentials = (event) => {
-    const { name, value } = event.target;
-    setCredentials((prevCredentials) => {
-      return {
-        ...prevCredentials,
-        [name]: value,
-      };
-    });
+  // const handlerChangeCredentials = (event) => {
+  //   const { name, value } = event.target;
+  //   setCredentials((prevCredentials) => {
+  //     return {
+  //       ...prevCredentials,
+  //       [name]: value,
+  //     };
+  //   });
 
-    const errorMessage = validate(event);
-    setValidationErrors((validationErrors) => {
-      const newValidationErrors = { ...validationErrors };
+  //   const errorMessage = validate(event);
+  //   setValidationErrors((validationErrors) => {
+  //     const newValidationErrors = { ...validationErrors };
 
-      if (errorMessage) {
-        newValidationErrors[name] = errorMessage;
-      } else {
-        delete newValidationErrors[name];
-      }
+  //     if (errorMessage) {
+  //       newValidationErrors[name] = errorMessage;
+  //     } else {
+  //       delete newValidationErrors[name];
+  //     }
 
-      return newValidationErrors;
-    });
-  };
+  //     return newValidationErrors;
+  //   });
+  // };
 
-  const validate = (event) => {
-    const { name, value } = event.target;
-    const objToValidate = { [name]: value };
-    const fieldSchema = { [name]: schema[name] };
-    const validationResult = Joi.validate(objToValidate, fieldSchema);
+  // const validate = (event) => {
+  //   const { name, value } = event.target;
+  //   const objToValidate = { [name]: value };
+  //   const fieldSchema = { [name]: schema[name] };
+  //   const validationResult = Joi.validate(objToValidate, fieldSchema);
 
-    return validationResult.error
-      ? validationResult.error.details[0].message
-      : null;
-  };
+  //   return validationResult.error
+  //     ? validationResult.error.details[0].message
+  //     : null;
+  // };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // alert("Login succcess!");
-    setIsLoggedIn(true);
-    navigate("/");
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // alert("Login succcess!");
+  //   setIsLoggedIn(true);
+  //   navigate("/");
+  // };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setCredentials(initialCredentials);
-    setUserList([]);
-    navigate("/");
-  };
+  // const handleLogout = () => {
+  //   setIsLoggedIn(false);
+  //   setCredentials(initialCredentials);
+  //   setUserList([]);
+  //   navigate("/");
+  // };
 
   const handlerToggleSaved = (restaurant) => {
     const existingIndex = userList.findIndex(
@@ -94,15 +93,15 @@ export function UserProvider({ children }) {
   const context = {
     // ES6 enhanced obj literal
     // credentials: credentials, -> credentials
-    credentials: credentials,
-    handlerChangeCredentials: handlerChangeCredentials,
-    handleSubmit: handleSubmit,
-    isLoggedIn: isLoggedIn,
-    setIsLoggedIn: setIsLoggedIn,
-    handleLogout: handleLogout,
+    // credentials: credentials,
+    // handlerChangeCredentials: handlerChangeCredentials,
+    // handleSubmit: handleSubmit,
+    // isLoggedIn: isLoggedIn,
+    // setIsLoggedIn: setIsLoggedIn,
+    // handleLogout: handleLogout,
     userList: userList,
     setUserList: setUserList,
-    validationErrors,
+    // validationErrors,
     handlerToggleSaved,
   };
 

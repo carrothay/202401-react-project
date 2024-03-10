@@ -1,17 +1,70 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserContext from "../context/UserContext";
 import { Box, Button } from "@mui/material";
 import styles from "./User.module.css";
 import FormText from "./FormText";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../context/userSlice";
+import Joi from "joi-browser";
+import { useNavigate } from "react-router";
 
 function UserLogin() {
-  const userCtx = useContext(UserContext);
-  const {
-    credentials,
-    handlerChangeCredentials,
-    handleSubmit,
-    validationErrors,
-  } = userCtx;
+  // const userCtx = useContext(UserContext);
+  // const {
+  //   credentials,
+  //   handlerChangeCredentials,
+  //   handleSubmit,
+  //   validationErrors,
+  // } = userCtx;
+  const [credentials, setCredentials] = useState({});
+  const [validationErrors, setValidationErrors] = useState({});
+  const schema = {
+    username: Joi.string().min(4).max(20).required(),
+    password: Joi.string().min(4).max(20).required(),
+  };
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Dispatch the loginUser action upon form submission
+    dispatch(loginUser(credentials));
+    navigate("/");
+  };
+
+  const handlerChangeCredentials = (event) => {
+    const { name, value } = event.target;
+    setCredentials((prevCredentials) => {
+      return {
+        ...prevCredentials,
+        [name]: value,
+      };
+    });
+
+    const errorMessage = validate(event);
+    setValidationErrors((validationErrors) => {
+      const newValidationErrors = { ...validationErrors };
+
+      if (errorMessage) {
+        newValidationErrors[name] = errorMessage;
+      } else {
+        delete newValidationErrors[name];
+      }
+
+      return newValidationErrors;
+    });
+  };
+
+  const validate = (event) => {
+    const { name, value } = event.target;
+    const objToValidate = { [name]: value };
+    const fieldSchema = { [name]: schema[name] };
+    const validationResult = Joi.validate(objToValidate, fieldSchema);
+
+    return validationResult.error
+      ? validationResult.error.details[0].message
+      : null;
+  };
 
   return (
     <div style={{ height: "100vh" }}>

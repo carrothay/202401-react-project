@@ -2,54 +2,43 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
 const initialState = {
-  user: { username: "tacocat", password: "1234" },
-  // isLoggedIn: false,
-  userList: [],
-  // validationErrors: {},
+  user: JSON.parse(localStorage.getItem("user")) || null,
+  // Read from local storage
+  isLoggedIn: localStorage.getItem("isLoggedIn") === "true",
+  savedList: [],
 };
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     loginUser: (state, action) => {
+      state.user = action.payload;
+      state.isLoggedIn = true;
+      // Save to local Storage
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      toast.success("Logged in");
       console.log("login");
     },
     logoutUser: (state) => {
       state.user = null;
-      localStorage.removeItem("user");
+      state.isLoggedIn = false;
+      localStorage.setItem("isLoggedIn", "false");
+      localStorage.setItem("user", null);
       toast.success("Logged out");
       console.log("logout");
+      //to add: remove savedList
     },
-    // setCredentials(state, action) {
-    //   state.credentials = action.payload;
-    // },
-    // setIsLoggedIn(state, action) {
-    //   state.isLoggedIn = action.payload;
-    // },
+
     // setUserList(state, action) {
     //   state.userList = action.payload;
-    // },
-    // setValidationErrors(state, action) {
-    //   state.validationErrors = action.payload;
-    // },
-    // clearUserData(state) {
-    //   state.credentials = initialState.credentials;
-    //   state.isLoggedIn = initialState.isLoggedIn;
-    //   state.userList = initialState.userList;
-    //   state.validationErrors = initialState.validationErrors;
     // },
   },
 });
 
-export const {
-  // setCredentials,
-  // setIsLoggedIn,
-  // setUserList,
-  // setValidationErrors,
-  // clearUserData,
-  loginUser,
-  logoutUser,
-} = userSlice.actions;
+export const { loginUser, logoutUser } = userSlice.actions;
+
+export const selectUser = (state) => state.user.user;
 
 export default userSlice.reducer;
