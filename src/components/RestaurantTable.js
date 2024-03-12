@@ -58,7 +58,7 @@ function RestaurantTable() {
       newList = restaurants;
     }
     setListToRender(newList);
-    console.log("in Table List to render:", listToRender);
+    // console.log("in Table List to render:", listToRender);
   }, [filteredRestaurants, restaurants, randomData, location.pathname]);
 
   const axiosConfig = {

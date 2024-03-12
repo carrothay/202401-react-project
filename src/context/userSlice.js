@@ -3,9 +3,10 @@ import { toast } from "react-toastify";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem("user")) || null,
-  // Read from local storage
+  savedList: localStorage.getItem("savedList")
+    ? JSON.parse(localStorage.getItem("savedList"))
+    : [],
   isLoggedIn: localStorage.getItem("isLoggedIn") === "true",
-  savedList: [],
 };
 
 export const userSlice = createSlice({
@@ -19,26 +20,47 @@ export const userSlice = createSlice({
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("user", JSON.stringify(action.payload));
       toast.success("Logged in");
-      console.log("login");
     },
     logoutUser: (state) => {
       state.user = null;
       state.isLoggedIn = false;
+      state.savedList = [];
       localStorage.setItem("isLoggedIn", "false");
       localStorage.setItem("user", null);
+      localStorage.setItem("savedList", []);
       toast.success("Logged out");
-      console.log("logout");
-      //to add: remove savedList
     },
-
-    // setUserList(state, action) {
-    //   state.userList = action.payload;
-    // },
+    toggleSavedList: (state, action) => {
+      const existingIndex = state.savedList.findIndex(
+        (item) => item.uuid === action.payload.uuid
+      );
+      if (existingIndex !== -1) {
+        // Remove it if it exists
+        state.savedList.splice(existingIndex, 1);
+      } else {
+        state.savedList.push(action.payload);
+      }
+      localStorage.setItem("savedList", JSON.stringify(state.savedList));
+    },
+    deleteItemFromSavedList: (state, action) => {
+      const idToDelete = action.payload;
+      state.savedList = state.savedList.filter(
+        (item) => item.uuid !== idToDelete
+      );
+      localStorage.setItem("savedList", JSON.stringify(state.savedList));
+    },
   },
 });
 
-export const { loginUser, logoutUser } = userSlice.actions;
+export const {
+  loginUser,
+  logoutUser,
+  toggleSavedList,
+  deleteItemFromSavedList,
+} = userSlice.actions;
 
 export const selectUser = (state) => state.user.user;
+export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
+export const selectSavedList = (state) => state.user.savedList;
 
 export default userSlice.reducer;

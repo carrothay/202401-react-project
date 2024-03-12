@@ -15,13 +15,21 @@ import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import RestaurantContext from "../context/RestaurantContext";
 import { useContext, useEffect, useState } from "react";
-import UserContext from "../context/UserContext";
+import {
+  selectIsLoggedIn,
+  selectSavedList,
+  toggleSavedList,
+} from "../context/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function RestaurantCard(props) {
-  const userCtx = useContext(UserContext);
-  const { userList, handlerToggleSaved, isLoggedIn } = userCtx;
   const restaurantCtx = useContext(RestaurantContext);
   const { setSelectedRes, setOffset } = restaurantCtx;
+
+  const savedList = useSelector(selectSavedList);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const dispatch = useDispatch();
+
   const [isSaved, setIsSaved] = useState(false);
 
   const StyledRating = styled(Rating)({
@@ -46,11 +54,16 @@ function RestaurantCard(props) {
 
   // useEffect to update isSaved when userList changes
   useEffect(() => {
-    setIsSaved(userList.some((item) => item.uuid === props.uuid));
-  }, [userList, props]);
+    if (savedList && savedList.length > 0) {
+      setIsSaved(savedList.some((item) => item.uuid === props.uuid));
+    } else {
+      setIsSaved(false);
+    }
+  }, [savedList, props]);
 
   const handlerFavourite = () => {
-    handlerToggleSaved(props);
+    dispatch(toggleSavedList(props));
+    //   handlerToggleSaved(props);
     setIsSaved(!isSaved);
   };
 

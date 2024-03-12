@@ -69,7 +69,7 @@ export function RestaurantProvider({ children }) {
     setRandomData,
   };
 
-  console.log("in context, listToRender info:", listToRender);
+  // console.log("in context, listToRender info:", listToRender);
 
   return (
     <RestaurantContext.Provider value={contextValue}>

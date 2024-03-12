@@ -59,15 +59,20 @@ const About = () => {
         </StatsContainer>
       </RootContainer>
       <Paragraph>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate
-        fugiat dicta architecto autem itaque laboriosam voluptas accusamus,
-        aliquam minima nemo error sunt, omnis eligendi perferendis voluptatum
-        recusandae nostrum? Laboriosam commodi enim, delectus at odit sit
-        accusamus? Soluta maxime vel libero! Lorem ipsum dolor sit amet
-        consectetur adipisicing elit. Voluptate fugiat dicta architecto autem
-        itaque laboriosam voluptas accusamus, aliquam minima nemo error sunt,
-        omnis eligendi perferendis voluptatum recusandae nostrum? Laboriosam
-        commodi enim, delectus at odit sit accusamus? Soluta maxime vel libero!{" "}
+        Welcome to our platform, where we celebrate the vibrant tapestry of
+        Singapore's culinary landscape. BITES serves as a comprehensive guide to
+        discovering the myriad food and beverage establishments that define the
+        gastronomic essence of this city-state. <br />
+        At our core, we strive to provide users with a curated selection of
+        dining destinations, ranging from renowned eateries to hidden gems
+        waiting to be explored. Whether you're a local enthusiast or a visiting
+        epicurean, our platform is designed to cater to your culinary
+        curiosities and preferences. <br />
+        Join us as we embark on a gastronomic odyssey through the heart and soul
+        of Singapore's culinary heritage. Whether you're embarking on a culinary
+        adventure or seeking to uncover hidden culinary gems, let our platform
+        be your trusted companion in the pursuit of culinary excellence. <br />
+        Discover. Indulge. Experience the flavors of Singapore.
       </Paragraph>
     </>
   );

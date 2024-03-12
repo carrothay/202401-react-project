@@ -17,7 +17,6 @@ const Restaurants = ({ userKeyword }) => {
   useEffect(() => {
     if (userKeyword !== "") {
       fetchRestaurants(userKeyword);
-      // console.log(restaurants);
     }
   }, [userKeyword, offset]);
 

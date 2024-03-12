@@ -36,12 +36,11 @@ function Recommendation() {
 
   // useEffect to fetch data when randomOffset changes
   useEffect(() => {
-    console.log("random offset: ", randomOffset);
     if (randomData.length !== 0) {
       return;
     }
     getRandom(randomOffset);
-    console.log(randomData);
+    // console.log(randomData);
   }, [randomOffset]);
 
   const getRandom = async (offset) => {

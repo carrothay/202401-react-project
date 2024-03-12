@@ -1,12 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { Box, Container, Rating, Typography, IconButton } from "@mui/material";
-import UserContext from "../context/UserContext";
-import { Add, Favorite, FavoriteBorder } from "@mui/icons-material";
+// import UserContext from "../context/UserContext";
+// import { Add, Favorite, FavoriteBorder } from "@mui/icons-material";
 import styles from "./RestaurantDetail.module.css";
 import Map from "../components/Map";
 import { styled } from "@mui/material/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RestaurantContext from "../context/RestaurantContext";
+import {
+  selectIsLoggedIn,
+  selectSavedList,
+  toggleSavedList,
+} from "../context/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -32,8 +38,11 @@ const FavIconBtn = styled(IconButton)`
 `;
 
 function RestaurantDetail() {
-  const userCtx = useContext(UserContext);
-  const { userList, handlerToggleSaved, isLoggedIn } = userCtx;
+  // const userCtx = useContext(UserContext);
+  // const { userList, handlerToggleSaved, isLoggedIn } = userCtx;
+  const savedList = useSelector(selectSavedList);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const dispatch = useDispatch();
 
   // Update: use restaurantContext instead of uselocation.state
   const restaurantCtx = useContext(RestaurantContext);
@@ -57,15 +66,20 @@ function RestaurantDetail() {
 
   // useEffect to update isSaved when userList changes
   useEffect(() => {
-    setIsSaved(userList.some((item) => item.uuid === uuid));
-  }, [userList, uuid]);
+    if (savedList && savedList.length > 0) {
+      setIsSaved(savedList.some((item) => item.uuid === uuid));
+    } else {
+      setIsSaved(false);
+    }
+  }, [savedList, uuid]);
 
   if (!selectedRes) {
     return <div style={styles.container}>Restaurant not found</div>;
   }
 
   const handlerFavourite = () => {
-    handlerToggleSaved(selectedRes);
+    dispatch(toggleSavedList(selectedRes));
+    // handlerToggleSaved(selectedRes);
     setIsSaved(!isSaved);
   };
 
