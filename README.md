@@ -4,6 +4,23 @@
 
 A react-based web application project that provides users with a seamless and intuitive experience for discovering food places in Singapore. Leveraging the Singapore Tourism Board API, we've crafted a user-friendly interface that allows users to explore a diverse array of dining options across the city-state.
 
+##
+
+### Purpose
+
+- Main Page:
+  Random restaurant recommendations are provided.
+  Users can search for restaurants using keywords.
+- Post-Search Page:
+  Displays 20 search results at a time.
+  Users can load more results by clicking the "Load More" button.
+  Filtering options are available to refine search results.
+- Detail Page:
+  Provides detailed information about a selected restaurant.
+  Includes features such as location map for easy navigation.
+- User Page:
+  Allows users to log in and they can view their saved restaurants list in the "My List" section.
+
 ### Dependencies
 
 The project utilizes the following libraries and dependencies:
