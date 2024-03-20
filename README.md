@@ -61,6 +61,12 @@ For building and running the application you need:
 - Node.js 20.9.0
 - Npm 10.1.0
 
+You need to create your own `.env` file and include your key from https://tih-dev.stb.gov.sg/getting-started:
+
+```
+REACT_APP_STB_API_KEY=YOURKEY
+```
+
 ### Setup
 
 To run this project, install it locally using npm:
