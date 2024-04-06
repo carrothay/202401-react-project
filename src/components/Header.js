@@ -1,4 +1,5 @@
 import Logo from "../assets/logo.png";
+import LogoDark from "../assets/logo-dark.png";
 import {
   AppBar,
   Box,
@@ -42,6 +43,9 @@ function Header({ handlerKeyword }) {
     setHamburgerEl(null);
   };
 
+  const handlerHome = () => {
+    navigate("/");
+  };
   const handlerAbout = () => {
     navigate("/about");
   };
@@ -63,6 +67,7 @@ function Header({ handlerKeyword }) {
       open={isHamburgerOpen}
       onClose={handleHamburgerMenuClose}
     >
+      <MenuItem onClick={handlerHome}>Home</MenuItem>
       <MenuItem onClick={handlerAbout}>About</MenuItem>
     </Menu>
   );
@@ -86,7 +91,11 @@ function Header({ handlerKeyword }) {
           </IconButton>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             <Link to="/" style={{ display: "flex", alignItems: "center" }}>
-              <img src={Logo} alt="logo" height={60} />
+              <img
+                src={mode === "dark" ? LogoDark : Logo}
+                alt="logo"
+                height={60}
+              />
             </Link>
           </Box>
           <Search>

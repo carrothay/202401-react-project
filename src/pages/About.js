@@ -30,10 +30,14 @@ const StatTitle = styled("div")(({ theme }) => ({
 
 const Paragraph = styled("p")(({ theme }) => ({
   marginTop: theme.spacing(6),
+  marginBottom: theme.spacing(6),
   fontSize: "1.125rem",
   lineHeight: "1.75",
   maxWidth: "42rem",
   margin: "auto",
+  "@media (max-width: 768px)": {
+    margin: "1rem",
+  },
 }));
 
 const About = () => {
@@ -63,15 +67,18 @@ const About = () => {
         Singapore's culinary landscape. BITES serves as a comprehensive guide to
         discovering the myriad food and beverage establishments that define the
         gastronomic essence of this city-state. <br />
+        <br />
         At our core, we strive to provide users with a curated selection of
         dining destinations, ranging from renowned eateries to hidden gems
         waiting to be explored. Whether you're a local enthusiast or a visiting
         epicurean, our platform is designed to cater to your culinary
         curiosities and preferences. <br />
+        <br />
         Join us as we embark on a gastronomic odyssey through the heart and soul
         of Singapore's culinary heritage. Whether you're embarking on a culinary
         adventure or seeking to uncover hidden culinary gems, let our platform
         be your trusted companion in the pursuit of culinary excellence. <br />
+        <br />
         Discover. Indulge. Experience the flavors of Singapore.
       </Paragraph>
     </>
