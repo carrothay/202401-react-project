@@ -1,6 +1,7 @@
 # Bites - Web App
 
-> F&B web app created with React.js
+> F&B web app created with React.js <br>
+> Demo Link: https://sctp-bites.netlify.app/
 
 A react-based web application project that provides users with a seamless and intuitive experience for discovering food places in Singapore. Leveraging the Singapore Tourism Board API, we've crafted a user-friendly interface that allows users to explore a diverse array of dining options across the city-state.
 
